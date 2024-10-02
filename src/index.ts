@@ -220,12 +220,6 @@ function publishPackages(options) {
         });
         console.log(`Successfully published ${pkg.name}@${version}`);
 
-        /* // Create and push tag
-        const tagName = `${pkg.name}@${version}`;
-        execSync(`git tag ${tagName}`);
-        execSync(`git push origin ${tagName}`);
-        console.log(`Pushed tag: ${tagName}`); */
-
         // Revert package.json changes
         execSync(`git checkout -- ${packageJsonPath}`);
       } catch (error) {
