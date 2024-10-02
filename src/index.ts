@@ -146,6 +146,12 @@ function updateVersions(type, options) {
     if (!options.dryRun) {
       packageJson.version = newVersion;
       fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
+
+      // Create and push tag
+      const tagName = `${pkg.name}@${version}`;
+      execSync(`git tag ${tagName}`);
+      execSync(`git push origin ${tagName}`);
+      console.log(`Pushed tag: ${tagName}`);
     }
 
     updatedPackages.add(pkg.name);
@@ -206,7 +212,6 @@ function publishPackages(options) {
     const version = packageJson.version;
 
     console.log(`Publishing ${pkg.name}@${version}`);
-    console.log(`New tag is ${version}`);
 
     if (!options.dryRun) {
       try {
@@ -215,11 +220,11 @@ function publishPackages(options) {
         });
         console.log(`Successfully published ${pkg.name}@${version}`);
 
-        // Create and push tag
+        /* // Create and push tag
         const tagName = `${pkg.name}@${version}`;
         execSync(`git tag ${tagName}`);
         execSync(`git push origin ${tagName}`);
-        console.log(`Pushed tag: ${tagName}`);
+        console.log(`Pushed tag: ${tagName}`); */
 
         // Revert package.json changes
         execSync(`git checkout -- ${packageJsonPath}`);
@@ -239,7 +244,7 @@ function generateChangelogs(options) {
   const rootDir = process.cwd();
 
   // Generate root changelog
-  const packageJsonPath = path.join(rootDir, "package.json");
+  // const packageJsonPath = path.join(rootDir, "package.json");
   const packageJson = JSON.parse(
     fs.readFileSync(path.join(rootDir, "package.json"), "utf8")
   );
@@ -255,17 +260,18 @@ function generateChangelogForPackage(packagePath, packageName, options) {
   const changelogPath = path.join(packagePath, "CHANGELOG.md");
   console.log(`Generating changelog for ${packageName}`);
 
-  console.log({ changelogPath });
+  const changelogStream = conventionalChangelog({
+    preset: "conventionalcommits",
+    releaseCount: 0,
+    skipUnstable: true,
+    pkg: {
+      path: path.join(packagePath, "package.json"),
+    },
+  });
+
+  console.log({ changelogStream });
 
   if (!options.dryRun) {
-    const changelogStream = conventionalChangelog({
-      preset: "angular",
-      releaseCount: 0,
-      pkg: {
-        path: path.join(packagePath, "package.json"),
-      },
-    });
-
     let changelog = "";
     changelogStream.on("data", (chunk) => {
       changelog += chunk.toString();
@@ -275,5 +281,7 @@ function generateChangelogForPackage(packagePath, packageName, options) {
       fs.writeFileSync(changelogPath, changelog);
       console.log(`Changelog generated for ${packageName}`);
     });
+
+    console.log({ changelogStream, changelog });
   }
 }
