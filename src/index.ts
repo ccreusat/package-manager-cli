@@ -25,7 +25,7 @@ program
   .command("version <type>")
   .description("Update package versions")
   .option("-d, --dry-run", "Perform a dry run")
-  .action(updateVersions);
+  .action(updateVersion);
 
 program
   .command("list")
@@ -126,7 +126,7 @@ function getPackages(dir) {
   return packages;
 }
 
-function updateVersions(type, options) {
+function updateVersion(type, options) {
   const packages = getPackages(process.cwd());
   const updatedPackages = new Set();
 
@@ -148,7 +148,7 @@ function updateVersions(type, options) {
       fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
 
       // Create and push tag
-      const tagName = `${pkg.name}@${version}`;
+      const tagName = `${pkg.name}@${newVersion}`;
       execSync(`git tag ${tagName}`);
       execSync(`git push origin ${tagName}`);
       console.log(`Pushed tag: ${tagName}`);
