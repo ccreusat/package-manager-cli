@@ -1,3 +1,12 @@
+### [1.1.11](https://github.com/ccreusat/package-manager-cli/compare/v1.1.10...v1.1.11) (2024-10-02)
+
+
+### Bug Fixes
+
+* fix changelog generation ([133e6be](https://github.com/ccreusat/package-manager-cli/commit/133e6bef202e8d8a99b4fd66defef3e0de4c2fe5))
+
+### [1.1.10](https://github.com/ccreusat/package-manager-cli/compare/v1.1.9...v1.1.10) (2024-10-02)
+
 ### [1.1.9](https://github.com/ccreusat/package-manager-cli/compare/1.1.9...v1.1.9) (2024-10-02)
 
 
@@ -13,6 +22,4 @@
 * remove console.log ([cdc3e2e](https://github.com/ccreusat/package-manager-cli/commit/cdc3e2e7c5b9a3421da791b0bca99ee1a202f9a1))
 * remove duplicate code ([0ea69b4](https://github.com/ccreusat/package-manager-cli/commit/0ea69b4bf21304f9839abe49287a300dc09f627a))
 * remove releaseCount ([623054b](https://github.com/ccreusat/package-manager-cli/commit/623054b8f059d70f543c3e453a490979b1b8b04a))
-
-### [1.1.10](https://github.com/ccreusat/package-manager-cli/compare/v1.1.9...v1.1.10) (2024-10-02)
 
