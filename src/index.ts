@@ -254,18 +254,16 @@ function generateChangelogForPackage(packagePath, packageName, options) {
   const changelogPath = path.join(packagePath, "CHANGELOG.md");
   console.log(`Generating changelog for ${packageName}`);
 
-  const changelogStream = conventionalChangelog({
-    preset: "conventionalcommits",
-    releaseCount: 0,
-    skipUnstable: true,
-    pkg: {
-      path: path.join(packagePath, "package.json"),
-    },
-  });
-
-  console.log({ changelogStream });
-
   if (!options.dryRun) {
+    const changelogStream = conventionalChangelog({
+      preset: "conventionalcommits",
+      releaseCount: 0,
+      skipUnstable: true,
+      pkg: {
+        path: path.join(packagePath, "package.json"),
+      },
+    });
+
     let changelog = "";
     changelogStream.on("data", (chunk) => {
       changelog += chunk.toString();
