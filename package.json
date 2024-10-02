@@ -3,9 +3,9 @@
   "private": true,
   "version": "1.1.11",
   "description": "CLI for managing package versions and publishing in mono/single repos",
-  "main": "cli.js",
+  "main": "index.js",
   "bin": {
-    "pkg-manager": "./dist/cli.js"
+    "pkg-manager": "./dist/index.js"
   },
   "dependencies": {
     "commander": "^8.3.0",
@@ -19,7 +19,7 @@
     "index.d.ts"
   ],
   "scripts": {
-    "build": "esbuild src/main.ts --bundle --platform=node --format=esm --packages=external --outfile=dist/cli.js",
+    "build": "esbuild src/index.ts --bundle --platform=node --format=esm --packages=external --outfile=dist/index.js",
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
     "version:cc": "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s -r 0"
   },

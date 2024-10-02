@@ -67,13 +67,10 @@ async function listPackages() {
         console.log(`- ${pkg.name} (${pkg.path})`);
       });
     } else {
-      const rootPackageJson = await fs.readFileSync(
-        path.join(rootDir, "pnpm-workspace.yaml"),
-        "utf8"
+      const packageJson = JSON.parse(
+        fs.readFileSync(path.join(rootDir, "package.json"), "utf8")
       );
-      const packageData = JSON.parse(rootPackageJson);
-      console.log("Root package.json:");
-      console.log(JSON.stringify(packageData, null, 2));
+      console.log(`Root package.json: ${packageJson.name}`);
     }
   } catch (error) {
     console.error("Error listing packages:", error.message);
@@ -286,7 +283,7 @@ function generateChangelogForPackage(packagePath, packageName, options) {
   if (!options.dryRun) {
     const changelogStream = conventionalChangelog({
       preset: "conventionalcommits",
-      releaseCount: 1,
+      releaseCount: 0,
       skipUnstable: true,
       pkg: {
         path: path.join(packagePath, "package.json"),
