@@ -214,7 +214,7 @@ function tagPackage(options) {
 
     if (!options.dryRun) {
       // Create and push tag
-      const tagName = `${pkg.name}@${version}`;
+      const tagName = `v${version}`;
       execSync(`git tag ${tagName}`);
       execSync(`git push origin ${tagName}`);
       console.log(`Pushed tag: ${tagName}`);
@@ -286,7 +286,7 @@ function generateChangelogForPackage(packagePath, packageName, options) {
   if (!options.dryRun) {
     const changelogStream = conventionalChangelog({
       preset: "conventionalcommits",
-      releaseCount: 1,
+      releaseCount: 0,
       skipUnstable: false,
       append: true,
       pkg: {
@@ -294,20 +294,35 @@ function generateChangelogForPackage(packagePath, packageName, options) {
       },
     });
 
-    let changelog = "";
+    changelogStream.setEncoding("utf8");
+
+    let changelog = [];
+    changelogStream.on("data", (chunk) => {
+      console.log({ chunk });
+      changelog.push(chunk);
+    });
+    changelogStream.on("end", async () => {
+      await fs.createWriteStream(changelogPath).write(changelog.join(""));
+    });
+
+    /* changelogStream
+      .pipe(fs.createWriteStream(changelogPath, { flags: "a" }))
+      .on("error", (err) => {
+        console.error("Erreur lors de l'écriture du changelog:", err);
+      })
+      .on("finish", () => {
+        console.log("Changelog mis à jour avec succès.");
+      }); */
+
+    /* let changelog = "";
     changelogStream.on("data", (chunk) => {
       changelog += chunk.toString();
     });
 
     changelogStream.on("end", () => {
-      //  fs.writeFileSync(changelogPath, changelog);
-      changelogStream.pipe(
-        fs.createWriteStream(path.join(packagePath, "CHANGELOG.md"), {
-          flags: "a",
-        })
-      );
+      fs.writeFileSync(changelogPath, changelog);
       console.log({ changelog });
       console.log(`Changelog generated for ${packageName}`);
-    });
+    }); */
   }
 }
