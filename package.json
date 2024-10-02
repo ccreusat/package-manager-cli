@@ -1,0 +1,35 @@
+{
+  "name": "package-manager-cli",
+  "private": true,
+  "version": "1.0.1",
+  "description": "CLI for managing package versions and publishing in mono/single repos",
+  "main": "cli.js",
+  "bin": {
+    "pkg-manager": "./dist/cli.js"
+  },
+  "dependencies": {
+    "commander": "^8.3.0",
+    "conventional-changelog": "^3.1.25",
+    "js-yaml": "^4.1.0",
+    "semver": "^7.3.5"
+  },
+  "type": "module",
+  "files": [
+    "dist",
+    "index.d.ts"
+  ],
+  "scripts": {
+    "build": "esbuild src/main.ts --bundle --platform=node --format=esm --packages=external --outfile=dist/cli.js"
+  },
+  "devDependencies": {
+    "@types/conventional-changelog": "^3.1.5",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^22.7.4",
+    "@types/semver": "^7.5.8",
+    "esbuild": "^0.24.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.1",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.10"
+  }
+}
