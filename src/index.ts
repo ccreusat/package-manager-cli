@@ -257,8 +257,7 @@ function generateChangelogForPackage(packagePath, packageName, options) {
   if (!options.dryRun) {
     const changelogStream = conventionalChangelog({
       preset: "conventionalcommits",
-      releaseCount: 0,
-      skipUnstable: true,
+      skipUnstable: false,
       pkg: {
         path: path.join(packagePath, "package.json"),
       },
@@ -271,9 +270,8 @@ function generateChangelogForPackage(packagePath, packageName, options) {
 
     changelogStream.on("end", () => {
       fs.writeFileSync(changelogPath, changelog);
+      console.log({ changelog });
       console.log(`Changelog generated for ${packageName}`);
     });
-
-    console.log({ changelogStream, changelog });
   }
 }
