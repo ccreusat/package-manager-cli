@@ -22,17 +22,23 @@ program
   );
 
 program
+  .command("list")
+  .description(
+    "List all packages in a monorepo or show root package.json for single repo"
+  )
+  .action(listPackages);
+
+program
   .command("version <type>")
   .description("Update package versions")
   .option("-d, --dry-run", "Perform a dry run")
   .action(updateVersion);
 
 program
-  .command("list")
-  .description(
-    "List all packages in a monorepo or show root package.json for single repo"
-  )
-  .action(listPackages);
+  .command("tag")
+  .description("Tag packages")
+  .option("-d, --dry-run", "Perform a dry run")
+  .action(tagPackage);
 
 program
   .command("publish")
@@ -193,6 +199,35 @@ function updateVersion(type, options) {
   //     fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
   //   }
   // });
+
+  if (!options.dryRun) {
+    console.log(
+      "Version update completed. Remember to commit these changes if needed."
+    );
+  }
+}
+
+function tagPackage(options) {
+  const packages = getPackages(process.cwd());
+  const updatedPackages = new Set();
+
+  packages.forEach((pkg) => {
+    const packageJson = JSON.parse(
+      fs.readFileSync(path.join(pkg.path, "package.json"), "utf8")
+    );
+
+    const version = packageJson.version;
+
+    if (!options.dryRun) {
+      // Create and push tag
+      const tagName = `${pkg.name}@${version}`;
+      execSync(`git tag ${tagName}`);
+      execSync(`git push origin ${tagName}`);
+      console.log(`Pushed tag: ${tagName}`);
+    }
+
+    updatedPackages.add(pkg.name);
+  });
 
   if (!options.dryRun) {
     console.log(
