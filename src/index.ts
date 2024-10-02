@@ -294,27 +294,7 @@ function generateChangelogForPackage(packagePath, packageName, options) {
       },
     });
 
-    changelogStream.setEncoding("utf8");
-
-    let changelog = [];
-    changelogStream.on("data", (chunk) => {
-      console.log({ chunk });
-      changelog.push(chunk);
-    });
-    changelogStream.on("end", async () => {
-      await fs.createWriteStream(changelogPath).write(changelog.join(""));
-    });
-
-    /* changelogStream
-      .pipe(fs.createWriteStream(changelogPath, { flags: "a" }))
-      .on("error", (err) => {
-        console.error("Erreur lors de l'écriture du changelog:", err);
-      })
-      .on("finish", () => {
-        console.log("Changelog mis à jour avec succès.");
-      }); */
-
-    /* let changelog = "";
+    let changelog = "";
     changelogStream.on("data", (chunk) => {
       changelog += chunk.toString();
     });
@@ -323,6 +303,6 @@ function generateChangelogForPackage(packagePath, packageName, options) {
       fs.writeFileSync(changelogPath, changelog);
       console.log({ changelog });
       console.log(`Changelog generated for ${packageName}`);
-    }); */
+    });
   }
 }
