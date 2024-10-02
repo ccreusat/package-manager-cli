@@ -1,7 +1,7 @@
 {
   "name": "package-manager-cli",
   "private": true,
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "CLI for managing package versions and publishing in mono/single repos",
   "main": "cli.js",
   "bin": {

@@ -152,12 +152,6 @@ function updateVersion(type, options) {
     if (!options.dryRun) {
       packageJson.version = newVersion;
       fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
-
-      // Create and push tag
-      const tagName = `${pkg.name}@${newVersion}`;
-      execSync(`git tag ${tagName}`);
-      execSync(`git push origin ${tagName}`);
-      console.log(`Pushed tag: ${tagName}`);
     }
 
     updatedPackages.add(pkg.name);
